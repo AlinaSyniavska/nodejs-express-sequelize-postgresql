@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const { Sequelize } = require('sequelize');
 
 const app = express();
 
@@ -11,6 +12,15 @@ app.use(express.urlencoded({ extended: true }));
 
 app.options('*', cors());
 app.use(cors(_configureCors()));
+
+const sequelize = new Sequelize(process.env.POSTGRES_URL);
+
+sequelize
+    .authenticate()
+    .then(() => console.log('The connection to the database was successfully established'))
+    .catch((e) => console.log(`Unable to connect to the database: ${e}`));
+
+
 
 app.get('/', (req, res) => {
     res.json({ message: 'Welcome to the application.' });
