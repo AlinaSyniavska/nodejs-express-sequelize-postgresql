@@ -4,6 +4,7 @@ const cors = require('cors');
 
 const { dbConnection, dbSync } = require('./dataBase/db');
 const { Employee, Position } = require('./dataBase/models');
+const {positionRouter} = require("./routes");
 
 const app = express();
 
@@ -16,8 +17,11 @@ app.options('*', cors());
 app.use(cors(_configureCors()));
 
 dbConnection().then();
-dbSync().then();
-_modelsDbSync();
+// dbSync().then(); // call sync() method in app.js only 1 time
+// _modelsDbSync(); // call sync() method in app.js only 1 time
+
+
+app.use('/api/positions', positionRouter);
 
 app.get('/', (req, res) => {
     res.json({ message: 'Welcome to the application.' });
