@@ -2,8 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 
-const { dbConnection, dbSync} = require('./dataBase/db');
-const {Employee, Position} = require("./dataBase/models");
+const { dbConnection, dbSync } = require('./dataBase/db');
+const { Employee, Position } = require('./dataBase/models');
 
 const app = express();
 
@@ -17,8 +17,7 @@ app.use(cors(_configureCors()));
 
 dbConnection().then();
 dbSync().then();
-Employee.sync({force: true}).then(() => console.log('Employee synced'));
-Position.sync({force: true}).then(() => console.log('Position synced'));
+_modelsDbSync();
 
 app.get('/', (req, res) => {
     res.json({ message: 'Welcome to the application.' });
@@ -55,4 +54,11 @@ function _configureCors() {
             }
         },
     };
+}
+
+function _modelsDbSync() {
+    Employee.sync({ force: true }).then(() => console.log('Employee synced'));
+    Position.sync({ force: true }).then(() => console.log('Position synced'));
+    Position.hasMany(Employee);
+    Employee.belongsTo(Position);
 }

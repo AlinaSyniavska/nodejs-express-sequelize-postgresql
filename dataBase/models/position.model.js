@@ -15,4 +15,5 @@ const Position = sq.define('Position', {
     },
 }, {timestamps: false});
 
+
 module.exports = Position
