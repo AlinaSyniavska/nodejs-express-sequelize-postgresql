@@ -13,6 +13,6 @@ const Position = sq.define('Position', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-});
+}, {timestamps: false});
 
 module.exports = Position

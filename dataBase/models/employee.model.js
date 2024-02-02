@@ -18,6 +18,6 @@ const Employee = sq.define('Employee', {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-});
+}, {timestamps: false});
 
 module.exports = Employee;
