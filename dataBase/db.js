@@ -12,7 +12,8 @@ const dbConnection = async () => {
 
 const dbSync = async () => {
     try {
-        await sequelize.sync({ force: true });
+        // await sequelize.sync({ force: true });
+        await sequelize.sync();
         console.log('All models synced.');
     } catch (error) {
         console.error('Sync Error:', error);

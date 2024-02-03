@@ -1,8 +1,10 @@
-const { Position } = require('../dataBase/models');
+const { Position, Employee} = require('../dataBase/models');
 
 module.exports = {
-    findAll: (params = {}) => {
-        return Position.findAll(params);
+    findAll: () => {
+        return Position.findAll({
+            include: Employee,
+        });
     },
 
     findOne: (id) => {

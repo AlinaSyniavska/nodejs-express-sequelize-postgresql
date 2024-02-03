@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const { dbConnection, dbSync } = require('./dataBase/db');
 const { Employee, Position } = require('./dataBase/models');
-const {positionRouter} = require("./routes");
+const { positionRouter, employeeRouter } = require('./routes');
 
 const app = express();
 
@@ -17,10 +17,10 @@ app.options('*', cors());
 app.use(cors(_configureCors()));
 
 dbConnection().then();
-// dbSync().then(); // call sync() method in app.js only 1 time
-// _modelsDbSync(); // call sync() method in app.js only 1 time
+dbSync().then(); // call sync() method in app.js only 1 time
+_modelsDbSync(); // call sync() method in app.js only 1 time
 
-
+app.use('/api/employee', employeeRouter);
 app.use('/api/positions', positionRouter);
 
 app.get('/', (req, res) => {
@@ -61,8 +61,14 @@ function _configureCors() {
 }
 
 function _modelsDbSync() {
-    Employee.sync({ force: true }).then(() => console.log('Employee synced'));
-    Position.sync({ force: true }).then(() => console.log('Position synced'));
-    Position.hasMany(Employee);
+    // Employee.sync({ force: true }).then(() => console.log('Employee synced'));
+    // Position.sync({ force: true }).then(() => console.log('Position synced'));
+    Employee.sync().then(() => console.log('Employee synced'));
+    Position.sync().then(() => console.log('Position synced'));
+    Position.hasMany(Employee, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
     Employee.belongsTo(Position);
 }
